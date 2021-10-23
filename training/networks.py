@@ -331,6 +331,7 @@ class SynthesisLayer(torch.nn.Module):
             print("before input",x.shape)
 
             ###### add gmlp here
+            print(self.to_embed)
             x = self.to_embed(x)
             print("after embed",x.shape)
             x = self.gmlpblock(x)
