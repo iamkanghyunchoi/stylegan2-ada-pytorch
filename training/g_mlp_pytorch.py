@@ -159,7 +159,7 @@ class SpatialGatingUnit(nn.Module):
             weight = weight.masked_fill(mask, 0.)
 
         gate = rearrange(gate, 'b n (h d) -> b h n d', h = h)
-
+        print("gate, weight",gate.shape,weight.shape)
         gate = einsum('b h n d, h m n -> b h m d', gate, weight)
         gate = gate + rearrange(bias, 'h n -> () h n ()')
 
@@ -195,7 +195,7 @@ class gMLPBlock(nn.Module):
         self.proj_out = nn.Linear(dim_ff // 2, dim)
 
     def forward(self, x):
-        print("inside block",x.shape)
+        # print("inside block",x.shape)
         gate_res = self.attn(x) if exists(self.attn) else None
         x = self.proj_in(x)
         x = self.sgu(x, gate_res = gate_res)
