@@ -294,17 +294,28 @@ class SynthesisLayer(torch.nn.Module):
             num_patches = self.resolution**2
             dim = in_channels
             dim_ff = dim*4
-            self.to_embed = nn.Sequential(
-                Rearrange('b c h w -> b (h w) c'),
-                nn.Linear(out_channels, dim,dtype=torch.float16 if self.resolution==128 else None)
-            )
+            if self.resolution == 128:
+                self.to_embed = nn.Sequential(
+                    Rearrange('b c h w -> b (h w) c'),
+                    nn.Linear(out_channels, dim).half()
+                )
+            else:
+                self.to_embed = nn.Sequential(
+                    Rearrange('b c h w -> b (h w) c'),
+                    nn.Linear(out_channels, dim)
+                )
 
             self.gmlpblock = Residual(PreNorm(dim, gMLPBlock(dim = dim, heads = 1, dim_ff = dim_ff, seq_len = num_patches, attn_dim = None)))
-
-            self.to_img = nn.Sequential(
-                nn.Linear(dim, out_channels,dtype=torch.float16 if self.resolution==128 else None),
-                Rearrange('b (h w) c -> b c h w', h=self.resolution, w=self.resolution)
-            )
+            if self.resolution == 128:
+                self.to_img = nn.Sequential(
+                    nn.Linear(dim, out_channels).half(),
+                    Rearrange('b (h w) c -> b c h w', h=self.resolution, w=self.resolution)
+                )
+            else:
+                self.to_img = nn.Sequential(
+                    nn.Linear(dim, out_channels),
+                    Rearrange('b (h w) c -> b c h w', h=self.resolution, w=self.resolution)
+                )
 
     def forward(self, x, w, noise_mode='random', fused_modconv=True, gain=1):
         assert noise_mode in ['random', 'const', 'none']
