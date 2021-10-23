@@ -303,7 +303,7 @@ class SynthesisLayer(torch.nn.Module):
 
             self.to_img = nn.Sequential(
                 nn.Linear(dim, in_channels),
-                Rearrange('b (h w) c -> b c h w')
+                Rearrange('b (h w) c -> b c h w', h=self.resolution, w=self.resolution)
             )
 
     def forward(self, x, w, noise_mode='random', fused_modconv=True, gain=1):
