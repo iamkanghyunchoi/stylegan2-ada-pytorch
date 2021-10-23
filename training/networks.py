@@ -296,13 +296,13 @@ class SynthesisLayer(torch.nn.Module):
             dim_ff = dim*4
             self.to_embed = nn.Sequential(
                 Rearrange('b c h w -> b (h w) c'),
-                nn.Linear(out_channels, dim)
+                nn.Linear(out_channels, dim,dtype=torch.float16 if self.resolution==128 else None)
             )
 
             self.gmlpblock = Residual(PreNorm(dim, gMLPBlock(dim = dim, heads = 1, dim_ff = dim_ff, seq_len = num_patches, attn_dim = None)))
 
             self.to_img = nn.Sequential(
-                nn.Linear(dim, out_channels),
+                nn.Linear(dim, out_channels,dtype=torch.float16 if self.resolution==128 else None),
                 Rearrange('b (h w) c -> b c h w', h=self.resolution, w=self.resolution)
             )
 
