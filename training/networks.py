@@ -319,6 +319,15 @@ class SynthesisLayer(torch.nn.Module):
         if self.use_noise and noise_mode == 'const':
             noise = self.noise_const * self.noise_strength
         
+
+        flip_weight = (self.up == 1) # slightly faster
+        x = modulated_conv2d(x=x, weight=self.weight, styles=styles, noise=noise, up=self.up,
+            padding=self.padding, resample_filter=self.resample_filter, flip_weight=flip_weight, fused_modconv=fused_modconv)
+
+        act_gain = self.act_gain * gain
+        act_clamp = self.conv_clamp * gain if self.conv_clamp is not None else None
+        x = bias_act.bias_act(x, self.bias.to(x.dtype), act=self.activation, gain=act_gain, clamp=act_clamp)
+    
         if self.resolution <256:
             print("before input",x.shape)
 
@@ -330,14 +339,6 @@ class SynthesisLayer(torch.nn.Module):
             x = self.to_img(x)
             print("after to img",x.shape)
             ######
-
-        flip_weight = (self.up == 1) # slightly faster
-        x = modulated_conv2d(x=x, weight=self.weight, styles=styles, noise=noise, up=self.up,
-            padding=self.padding, resample_filter=self.resample_filter, flip_weight=flip_weight, fused_modconv=fused_modconv)
-
-        act_gain = self.act_gain * gain
-        act_clamp = self.conv_clamp * gain if self.conv_clamp is not None else None
-        x = bias_act.bias_act(x, self.bias.to(x.dtype), act=self.activation, gain=act_gain, clamp=act_clamp)
         return x
 
 #----------------------------------------------------------------------------
