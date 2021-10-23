@@ -14,6 +14,7 @@ from torch_utils.ops import conv2d_resample
 from torch_utils.ops import upfirdn2d
 from torch_utils.ops import bias_act
 from torch_utils.ops import fma
+from g_mlp_pytorch import Residual, PreNorm, gMLPBlock
 
 #----------------------------------------------------------------------------
 
@@ -283,6 +284,19 @@ class SynthesisLayer(torch.nn.Module):
             self.noise_strength = torch.nn.Parameter(torch.zeros([]))
         self.bias = torch.nn.Parameter(torch.zeros([out_channels]))
 
+        ######## gmlp part
+
+        patch_size = 16 if self.resolution >= 16 else self.resolution
+        num_patches = (self.resolution//patch_size)**2
+        dim = 512
+        dim_ff = dim*4
+        self.to_patch_embed = nn.Sequential(
+            Rearrange('b c (h p1) (w p2) -> b (h w) (c p1 p2)', p1 = patch_size, p2 = patch_size),
+            nn.Linear(in_channels * patch_size * patch_size, dim)
+        )
+
+        self.gmlpblock = nn.ModuleList([Residual(PreNorm(dim, gMLPBlock(dim = dim, heads = 1, dim_ff = dim_ff, seq_len = num_patches, attn_dim = None)))])
+
     def forward(self, x, w, noise_mode='random', fused_modconv=True, gain=1):
         assert noise_mode in ['random', 'const', 'none']
         in_resolution = self.resolution // self.up
@@ -294,6 +308,11 @@ class SynthesisLayer(torch.nn.Module):
             noise = torch.randn([x.shape[0], 1, self.resolution, self.resolution], device=x.device) * self.noise_strength
         if self.use_noise and noise_mode == 'const':
             noise = self.noise_const * self.noise_strength
+
+        ###### add gmlp here
+        x = self.to_patch_embed(x)
+        x = self.gmlpblock(x)
+        ######
 
         flip_weight = (self.up == 1) # slightly faster
         x = modulated_conv2d(x=x, weight=self.weight, styles=styles, noise=noise, up=self.up,
