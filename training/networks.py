@@ -299,19 +299,21 @@ class SynthesisLayer(torch.nn.Module):
                     Rearrange('b c h w -> b (h w) c'),
                     nn.Linear(out_channels, dim).half()
                 )
+
+                self.gmlpblock = Residual(PreNorm(dim, gMLPBlock(dim = dim, heads = 1, dim_ff = dim_ff, seq_len = num_patches, attn_dim = None))).half()
+
+                self.to_img = nn.Sequential(
+                    nn.Linear(dim, out_channels).half(),
+                    Rearrange('b (h w) c -> b c h w', h=self.resolution, w=self.resolution)
+                )
             else:
                 self.to_embed = nn.Sequential(
                     Rearrange('b c h w -> b (h w) c'),
                     nn.Linear(out_channels, dim)
                 )
 
-            self.gmlpblock = Residual(PreNorm(dim, gMLPBlock(dim = dim, heads = 1, dim_ff = dim_ff, seq_len = num_patches, attn_dim = None)))
-            if self.resolution == 128:
-                self.to_img = nn.Sequential(
-                    nn.Linear(dim, out_channels).half(),
-                    Rearrange('b (h w) c -> b c h w', h=self.resolution, w=self.resolution)
-                )
-            else:
+                self.gmlpblock = Residual(PreNorm(dim, gMLPBlock(dim = dim, heads = 1, dim_ff = dim_ff, seq_len = num_patches, attn_dim = None)))
+
                 self.to_img = nn.Sequential(
                     nn.Linear(dim, out_channels),
                     Rearrange('b (h w) c -> b c h w', h=self.resolution, w=self.resolution)
