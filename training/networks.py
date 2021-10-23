@@ -341,16 +341,16 @@ class SynthesisLayer(torch.nn.Module):
         x = bias_act.bias_act(x, self.bias.to(x.dtype), act=self.activation, gain=act_gain, clamp=act_clamp)
     
         if self.resolution <256:
-            print("before input",x.shape)
+            # print("before input",x.shape)
 
             ###### add gmlp here
-            print(self.to_embed)
+            # print(self.to_embed)
             x = self.to_embed(x)
-            print("after embed",x.shape)
+            # print("after embed",x.shape)
             x = self.gmlpblock(x)
-            print("after gmlp",x.shape)
+            # print("after gmlp",x.shape)
             x = self.to_img(x)
-            print("after to img",x.shape)
+            # print("after to img",x.shape)
             ######
         return x
 
