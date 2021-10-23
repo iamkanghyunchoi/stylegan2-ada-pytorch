@@ -16,6 +16,8 @@ from torch_utils.ops import bias_act
 from torch_utils.ops import fma
 from .g_mlp_pytorch import Residual, PreNorm, gMLPBlock
 import torch.nn as nn
+from einops import rearrange, repeat
+from einops.layers.torch import Rearrange, Reduce
 
 #----------------------------------------------------------------------------
 
