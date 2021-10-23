@@ -289,6 +289,7 @@ class SynthesisLayer(torch.nn.Module):
 
         ######## gmlp part
 
+        num_patches = self.resolution**2
         dim = 512
         dim_ff = dim*4
         self.to_embed = nn.Sequential(
