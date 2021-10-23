@@ -314,11 +314,11 @@ class SynthesisLayer(torch.nn.Module):
         
         print("before input",x.shape)
 
-        ###### add gmlp here
-        x = self.to_patch_embed(x)
-        print("after patch",x.shape)
-        x = self.gmlpblock(x)
-        print("after gmlp",x.shape)
+        # ###### add gmlp here
+        # x = self.to_patch_embed(x)
+        # print("after patch",x.shape)
+        # x = self.gmlpblock(x)
+        # print("after gmlp",x.shape)
         ######
 
         flip_weight = (self.up == 1) # slightly faster
