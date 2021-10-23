@@ -14,7 +14,7 @@ from torch_utils.ops import conv2d_resample
 from torch_utils.ops import upfirdn2d
 from torch_utils.ops import bias_act
 from torch_utils.ops import fma
-from g_mlp_pytorch import Residual, PreNorm, gMLPBlock
+from .g_mlp_pytorch import Residual, PreNorm, gMLPBlock
 
 #----------------------------------------------------------------------------
 
