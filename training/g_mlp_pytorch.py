@@ -195,6 +195,7 @@ class gMLPBlock(nn.Module):
         self.proj_out = nn.Linear(dim_ff // 2, dim)
 
     def forward(self, x):
+        print("inside block",x.shape)
         gate_res = self.attn(x) if exists(self.attn) else None
         x = self.proj_in(x)
         x = self.sgu(x, gate_res = gate_res)
