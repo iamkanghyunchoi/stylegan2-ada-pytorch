@@ -312,11 +312,13 @@ class SynthesisLayer(torch.nn.Module):
         if self.use_noise and noise_mode == 'const':
             noise = self.noise_const * self.noise_strength
         
-        print(x.shape)
+        print("before input",x.shape)
 
         ###### add gmlp here
         x = self.to_patch_embed(x)
+        print("after patch",x.shape)
         x = self.gmlpblock(x)
+        print("after gmlp",x.shape)
         ######
 
         flip_weight = (self.up == 1) # slightly faster
