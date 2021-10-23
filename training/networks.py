@@ -301,10 +301,10 @@ class SynthesisLayer(torch.nn.Module):
 
             self.gmlpblock = Residual(PreNorm(dim, gMLPBlock(dim = dim, heads = 1, dim_ff = dim_ff, seq_len = num_patches, attn_dim = None)))
 
-        # self.to_img = nn.Sequential(
-        #     nn.Linear(dim, in_channels),
-        #     Rearrange('b (h w) c -> b c h w')
-        # )
+            self.to_img = nn.Sequential(
+                nn.Linear(dim, in_channels),
+                Rearrange('b (h w) c -> b c h w')
+            )
 
     def forward(self, x, w, noise_mode='random', fused_modconv=True, gain=1):
         assert noise_mode in ['random', 'const', 'none']
@@ -326,6 +326,8 @@ class SynthesisLayer(torch.nn.Module):
             print("after embed",x.shape)
             x = self.gmlpblock(x)
             print("after gmlp",x.shape)
+            x = self.to_img(x)
+            print("after to img",x.shape)
             ######
 
         flip_weight = (self.up == 1) # slightly faster
