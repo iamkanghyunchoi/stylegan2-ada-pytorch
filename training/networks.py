@@ -292,7 +292,7 @@ class SynthesisLayer(torch.nn.Module):
         if self.resolution < 256:
 
             num_patches = self.resolution**2
-            dim = self.in_channels
+            dim = in_channels
             dim_ff = dim*4
             self.to_embed = nn.Sequential(
                 Rearrange('b c h w -> b (h w) c'),
