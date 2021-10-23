@@ -298,7 +298,7 @@ class SynthesisLayer(torch.nn.Module):
             nn.Linear(in_channels * patch_size * patch_size, dim)
         )
 
-        self.gmlpblock = nn.ModuleList([Residual(PreNorm(dim, gMLPBlock(dim = dim, heads = 1, dim_ff = dim_ff, seq_len = num_patches, attn_dim = None)))])
+        self.gmlpblock = Residual(PreNorm(dim, gMLPBlock(dim = dim, heads = 1, dim_ff = dim_ff, seq_len = num_patches, attn_dim = None)))
 
     def forward(self, x, w, noise_mode='random', fused_modconv=True, gain=1):
         assert noise_mode in ['random', 'const', 'none']
