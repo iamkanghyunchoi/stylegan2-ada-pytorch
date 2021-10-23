@@ -159,7 +159,7 @@ class SpatialGatingUnit(nn.Module):
             weight = weight.masked_fill(mask, 0.)
 
         gate = rearrange(gate, 'b n (h d) -> b h n d', h = h)
-        print("gate, weight",gate.shape,weight.shape)
+        # print("gate, weight",gate.shape,weight.shape)
         gate = einsum('b h n d, h m n -> b h m d', gate, weight)
         gate = gate + rearrange(bias, 'h n -> () h n ()')
 
