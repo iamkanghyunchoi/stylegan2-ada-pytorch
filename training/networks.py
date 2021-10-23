@@ -289,15 +289,17 @@ class SynthesisLayer(torch.nn.Module):
 
         ######## gmlp part
 
-        num_patches = self.resolution**2
-        dim = 512
-        dim_ff = dim*4
-        self.to_embed = nn.Sequential(
-            Rearrange('b c h w -> b (h w) c'),
-            nn.Linear(in_channels, dim)
-        )
+        if self.resolution < 256:
 
-        self.gmlpblock = Residual(PreNorm(dim, gMLPBlock(dim = dim, heads = 1, dim_ff = dim_ff, seq_len = num_patches, attn_dim = None)))
+            num_patches = self.resolution**2
+            dim = 512
+            dim_ff = dim*4
+            self.to_embed = nn.Sequential(
+                Rearrange('b c h w -> b (h w) c'),
+                nn.Linear(in_channels, dim)
+            )
+
+            self.gmlpblock = Residual(PreNorm(dim, gMLPBlock(dim = dim, heads = 1, dim_ff = dim_ff, seq_len = num_patches, attn_dim = None)))
 
         # self.to_img = nn.Sequential(
         #     nn.Linear(dim, in_channels),
@@ -316,14 +318,15 @@ class SynthesisLayer(torch.nn.Module):
         if self.use_noise and noise_mode == 'const':
             noise = self.noise_const * self.noise_strength
         
-        print("before input",x.shape)
+        if self.resolution <256:
+            print("before input",x.shape)
 
-        ###### add gmlp here
-        x = self.to_embed(x)
-        print("after embed",x.shape)
-        x = self.gmlpblock(x)
-        print("after gmlp",x.shape)
-        ######
+            ###### add gmlp here
+            x = self.to_embed(x)
+            print("after embed",x.shape)
+            x = self.gmlpblock(x)
+            print("after gmlp",x.shape)
+            ######
 
         flip_weight = (self.up == 1) # slightly faster
         x = modulated_conv2d(x=x, weight=self.weight, styles=styles, noise=noise, up=self.up,
