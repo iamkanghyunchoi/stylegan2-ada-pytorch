@@ -1,0 +1,49 @@
+Loading training set...
+
+Num images:  70000
+Image shape: [3, 1024, 1024]
+Label shape: [0]
+
+Constructing networks...
+Traceback (most recent call last):
+  File "train.py", line 538, in <module>
+    main() # pylint: disable=no-value-for-parameter
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 722, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 697, in main
+    rv = self.invoke(ctx)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 895, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 535, in invoke
+    return callback(*args, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/decorators.py", line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "train.py", line 531, in main
+    subprocess_fn(rank=0, args=args, temp_dir=temp_dir)
+  File "train.py", line 383, in subprocess_fn
+    training_loop.training_loop(rank=rank, **args)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/training_loop.py", line 150, in training_loop
+    G = dnnlib.util.construct_class_by_name(**G_kwargs, **common_kwargs).train().requires_grad_(False).to(device) # subclass of torch.nn.Module
+  File "/home/ubuntu/stylegan2-ada-pytorch/dnnlib/util.py", line 289, in construct_class_by_name
+    return call_func_by_name(*args, func_name=class_name, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/dnnlib/util.py", line 282, in call_func_by_name
+    func_obj = get_obj_by_name(func_name)
+  File "/home/ubuntu/stylegan2-ada-pytorch/dnnlib/util.py", line 275, in get_obj_by_name
+    module, obj_name = get_module_from_obj_name(name)
+  File "/home/ubuntu/stylegan2-ada-pytorch/dnnlib/util.py", line 246, in get_module_from_obj_name
+    importlib.import_module(module_name) # may raise ImportError
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 941, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 17, in <module>
+    from g_mlp_pytorch import Residual, PreNorm, gMLPBlock
+ModuleNotFoundError: No module named 'g_mlp_pytorch'

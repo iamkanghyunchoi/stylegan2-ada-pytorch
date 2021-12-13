@@ -1,0 +1,56 @@
+Loading training set...
+
+Num images:  70000
+Image shape: [3, 1024, 1024]
+Label shape: [0]
+
+Constructing networks...
+Setting up PyTorch plugin "bias_act_plugin"... Done.
+before input torch.Size([4, 512, 4, 4])
+after embed torch.Size([4, 16, 512])
+inside block torch.Size([4, 16, 512])
+after gmlp torch.Size([4, 16, 512])
+Traceback (most recent call last):
+  File "train.py", line 538, in <module>
+    main() # pylint: disable=no-value-for-parameter
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 722, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 697, in main
+    rv = self.invoke(ctx)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 895, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 535, in invoke
+    return callback(*args, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/decorators.py", line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "train.py", line 531, in main
+    subprocess_fn(rank=0, args=args, temp_dir=temp_dir)
+  File "train.py", line 383, in subprocess_fn
+    training_loop.training_loop(rank=rank, **args)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/training_loop.py", line 166, in training_loop
+    img = misc.print_module_summary(G, [z, c])
+  File "/home/ubuntu/stylegan2-ada-pytorch/torch_utils/misc.py", line 212, in print_module_summary
+    outputs = module(*inputs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 532, in forward
+    img = self.synthesis(ws, **synthesis_kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 504, in forward
+    x, img = block(x, img, cur_ws, **block_kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 431, in forward
+    x = self.conv1(x, next(w_iter), fused_modconv=fused_modconv, **layer_kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 333, in forward
+    padding=self.padding, resample_filter=self.resample_filter, flip_weight=flip_weight, fused_modconv=fused_modconv)
+  File "/home/ubuntu/stylegan2-ada-pytorch/torch_utils/misc.py", line 101, in decorator
+    return fn(*args, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 47, in modulated_conv2d
+    misc.assert_shape(x, [batch_size, in_channels, None, None]) # [NIHW]
+  File "/home/ubuntu/stylegan2-ada-pytorch/torch_utils/misc.py", line 82, in assert_shape
+    raise AssertionError(f'Wrong number of dimensions: got {tensor.ndim}, expected {len(ref_shape)}')
+AssertionError: Wrong number of dimensions: got 3, expected 4

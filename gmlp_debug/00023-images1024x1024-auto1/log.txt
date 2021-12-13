@@ -1,0 +1,49 @@
+Loading training set...
+
+Num images:  70000
+Image shape: [3, 1024, 1024]
+Label shape: [0]
+
+Constructing networks...
+Traceback (most recent call last):
+  File "train.py", line 538, in <module>
+    main() # pylint: disable=no-value-for-parameter
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 722, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 697, in main
+    rv = self.invoke(ctx)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 895, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 535, in invoke
+    return callback(*args, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/decorators.py", line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "train.py", line 531, in main
+    subprocess_fn(rank=0, args=args, temp_dir=temp_dir)
+  File "train.py", line 383, in subprocess_fn
+    training_loop.training_loop(rank=rank, **args)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/training_loop.py", line 150, in training_loop
+    G = dnnlib.util.construct_class_by_name(**G_kwargs, **common_kwargs).train().requires_grad_(False).to(device) # subclass of torch.nn.Module
+  File "/home/ubuntu/stylegan2-ada-pytorch/dnnlib/util.py", line 289, in construct_class_by_name
+    return call_func_by_name(*args, func_name=class_name, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/dnnlib/util.py", line 284, in call_func_by_name
+    return func_obj(*args, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/torch_utils/persistence.py", line 104, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 529, in __init__
+    self.synthesis = SynthesisNetwork(w_dim=w_dim, img_resolution=img_resolution, img_channels=img_channels, **synthesis_kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/torch_utils/persistence.py", line 104, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 487, in __init__
+    img_channels=img_channels, is_last=is_last, use_fp16=use_fp16, **block_kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/torch_utils/persistence.py", line 104, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 403, in __init__
+    conv_clamp=conv_clamp, channels_last=self.channels_last, **layer_kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/torch_utils/persistence.py", line 104, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 295, in __init__
+    dim = self.in_channels
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/torch/nn/modules/module.py", line 779, in __getattr__
+    type(self).__name__, name))
+torch.nn.modules.module.ModuleAttributeError: 'SynthesisLayer' object has no attribute 'in_channels'

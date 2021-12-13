@@ -1,0 +1,61 @@
+Loading training set...
+
+Num images:  70000
+Image shape: [3, 1024, 1024]
+Label shape: [0]
+
+Constructing networks...
+Traceback (most recent call last):
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/einops/layers/__init__.py", line 35, in recipe
+    return _prepare_transformation_recipe(self.pattern, operation='rearrange', axes_lengths=hashable_lengths)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/einops/einops.py", line 288, in _prepare_transformation_recipe
+    raise EinopsError('Could not infer sizes for {}'.format(unknown))
+einops.EinopsError: Could not infer sizes for {'h', 'w'}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "train.py", line 538, in <module>
+    main() # pylint: disable=no-value-for-parameter
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 722, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 697, in main
+    rv = self.invoke(ctx)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 895, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/core.py", line 535, in invoke
+    return callback(*args, **kwargs)
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/click/decorators.py", line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "train.py", line 531, in main
+    subprocess_fn(rank=0, args=args, temp_dir=temp_dir)
+  File "train.py", line 383, in subprocess_fn
+    training_loop.training_loop(rank=rank, **args)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/training_loop.py", line 150, in training_loop
+    G = dnnlib.util.construct_class_by_name(**G_kwargs, **common_kwargs).train().requires_grad_(False).to(device) # subclass of torch.nn.Module
+  File "/home/ubuntu/stylegan2-ada-pytorch/dnnlib/util.py", line 289, in construct_class_by_name
+    return call_func_by_name(*args, func_name=class_name, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/dnnlib/util.py", line 284, in call_func_by_name
+    return func_obj(*args, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/torch_utils/persistence.py", line 104, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 523, in __init__
+    self.synthesis = SynthesisNetwork(w_dim=w_dim, img_resolution=img_resolution, img_channels=img_channels, **synthesis_kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/torch_utils/persistence.py", line 104, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 481, in __init__
+    img_channels=img_channels, is_last=is_last, use_fp16=use_fp16, **block_kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/torch_utils/persistence.py", line 104, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 397, in __init__
+    conv_clamp=conv_clamp, channels_last=self.channels_last, **layer_kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/torch_utils/persistence.py", line 104, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/ubuntu/stylegan2-ada-pytorch/training/networks.py", line 304, in __init__
+    Rearrange('b (h w) c -> b c h w')
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/einops/layers/__init__.py", line 23, in __init__
+    self._recipe = self.recipe()  # checking parameters
+  File "/home/ubuntu/anaconda3/envs/pytorch_180/lib/python3.6/site-packages/einops/layers/__init__.py", line 37, in recipe
+    raise EinopsError(' Error while preparing {!r}\n {}'.format(self, e))
+einops.EinopsError:  Error while preparing Rearrange('b (h w) c -> b c h w')
+ Could not infer sizes for {'h', 'w'}

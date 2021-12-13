@@ -1,0 +1,1 @@
+{"results": {"fid50k_full": 306.6656277593121}, "metric": "fid50k_full", "total_time": 2826.5880098342896, "total_time_str": "47m 07s", "num_gpus": 1, "snapshot_pkl": "network-snapshot-000000.pkl", "timestamp": 1634993668.4652839}
